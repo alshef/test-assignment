@@ -11,9 +11,10 @@ class Dataset:
     """
     def __init__(self, path_to_labels_csv, image_format):
         """
-
-        :param path_to_labels_csv:
-        :param image_format:
+        :param path_to_labels_csv: str
+            path to the csv file with labels
+        :param image_format: str
+            type of the image (aps, a3daps, ahi)
         """
         data_frame = pd.read_csv(path_to_labels_csv, index_col=0)
         self.X_file_names = data_frame.index.values
@@ -24,13 +25,15 @@ class Dataset:
 
     def get_train_batch_generator(self, dir_path, batch_size, channels):
         """
-        Returns a batch generator for training which transforms chunk of raw images into numpy matrices
+        Return a batch generator for training which transforms chunk of raw images into numpy matrices
         and then "yield" them for the classifier
 
-        :param batch_size: int
-            size of the generated batches
         :param dir_path: str
             path to the directory with certain type images
+        :param batch_size: int
+            size of the generated batches
+        :param channels: int
+            number of channels in the image
         :return: generator
             batch generator
         """
@@ -61,11 +64,17 @@ class Dataset:
 
     def get_predict_batch_generator(self, dir_path, batch_size, channels):
         """
-        
-        :param dir_path:
-        :param batch_size:
-        :param channels:
-        :return:
+        Return a batch generator for prediction which transforms chunk of raw images into numpy matrices
+        and then "yield" them for the classifier
+
+        :param dir_path: str
+            path to the directory with certain type images
+        :param batch_size: int
+            size of the generated batches
+        :param channels: int
+            number of channels in the image
+        :return: generator
+            batch generator
         """
         number_of_batches = np.ceil(self.nb_files / batch_size)
         counter = 0
@@ -90,10 +99,14 @@ class Dataset:
 
     def get_list_images(self, dir_path, channels):
         """
+        Return array of all images with names in X_file_names
 
-        :param dir_path:
-        :param channels:
-        :return:
+        :param dir_path: str
+            path to the directory with certain type images
+        :param channels: int
+            number of channels in the image
+        :return: numpy.ndarray
+            array of images
         """
         slices = np.arange(0, channels, channels // 4)
         image_list = []
@@ -104,10 +117,14 @@ class Dataset:
 
     def read_extract_slices_normalize(self, image_path, slices):
         """
+        Read an image, extract special slices (front, left, back, right) and normalize them
 
-        :param image_path:
-        :param slices:
-        :return:
+        :param image_path: str
+            path to the image
+        :param slices: numpy.ndarray
+            numbers of slices
+        :return: numpy.ndarray
+            image
         """
         source_image = self.read_data(image_path)
         image = source_image[:, :, slices]
