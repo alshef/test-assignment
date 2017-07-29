@@ -16,15 +16,22 @@ class Model:
     def __init__(self, type_cnn=0, opt=Adam(), input_shape=(660,512,16), nb_epoch=20, patience=3,
                  batch_size=8, channels=16, name='default_name'):
         """
-
-        :param type_cnn:
-        :param opt:
-        :param input_shape:
-        :param nb_epoch:
-        :param patience:
-        :param batch_size:
-        :param channels:
-        :param name:
+        :param type_cnn: int
+            type of CNN, that will be trained
+        :param opt: optimizer
+            optimizer fot CNN
+        :param input_shape: tuple
+            shape of images
+        :param nb_epoch: int
+            number of epoch to train
+        :param patience: int
+            parameter for EarlyStopping
+        :param batch_size: int
+            size of batch
+        :param channels: int
+            number of channels in the image
+        :param name: int
+            name of model
         """
         self.model = None
         self.type_cnn = type_cnn
@@ -46,8 +53,6 @@ class Model:
             validation dataset
         :param dir_path: str
             path to the directory of images
-        :return:
-            trained model
         """
 
         if self.type_cnn == 0:
@@ -82,22 +87,28 @@ class Model:
 
     def save_model(self, path):
         """
+        Save trained model
 
-        :param path:
-        :return:
+        :param path: str
+            path where save model
         """
         print('Save model')
         self.model.save(filepath=path)
 
     def make_submission(self, test_dataset, path_submit, dir_path, after_training=True, path_to_model=None):
         """
+        Create submission file
 
-        :param test_dataset:
-        :param path_submit:
-        :param dir_path:
-        :param after_training:
-        :param path_to_model:
-        :return:
+        :param test_dataset: Dataset
+            dataset for testing
+        :param path_submit: str
+            path to the directory with submissions
+        :param dir_path: str
+            path to the directory with images
+        :param after_training: boolean
+            flag
+        :param path_to_model: str
+            used if after_training == False to load model
         """
         print('Make submission')
         if not after_training:
@@ -120,8 +131,7 @@ class Model:
 
     def prog_set_2d_CNN(self):
         """
-
-        :return:
+        Configure CNN for 2D projections
         """
         inputs = Input((self.input_shape[0], self.input_shape[1], 4))
 
